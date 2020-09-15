@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_marginRight="0sp"
+    android:background="@drawable/received_mssg_bg"
+    android:padding="10sp"
+    android:layout_margin="5sp"
+
+
+    android:layout_alignParentEnd="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <TextView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-Me"
+        android:layout_alignParentBottom="true"
+
+        android:gravity="right"
+        android:textColor="@android:color/holo_purple"
+        android:textSize="10dp"
+        android:layout_marginLeft="10sp"
+
+
+        android:id="@+id/txtUsername"
+
+        ></TextView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Messagjgiijjj djkdlddcnccnmmdkjje"
+        android:id="@+id/txtReceiveMssg"
+        android:fontFamily="@font/roboto"
+
+        android:layout_margin="10sp"
+
+
+
+        android:textSize="20sp"
+        android:textColor="#20639B"
+        android:paddingBottom="10dp"></TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10sp"
+        android:layout_marginBottom="10sp"
+        android:textColor="@android:color/holo_purple"
+
+        android:textSize="10dp"
+        android:id="@+id/txtTime"
+
+        android:text="6:02"
+
+        ></TextView>
+
+</RelativeLayout>
+
+
+

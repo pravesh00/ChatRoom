@@ -1,0 +1,120 @@
+package com.five5.chatroom;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.five5.chatroom.Adapter.messageAdapter;
+import com.five5.chatroom.Data.message;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+public class Output_Chatroom extends AppCompatActivity {
+    EditText mssgBox;
+    ImageButton sendBtn;
+    ProgressBar sendPgr;
+    RecyclerView mssgRecycler;
+    ArrayList<message> arrayMssg= new ArrayList<>();
+    Button img;
+
+    FirebaseDatabase mDatabase;
+    DatabaseReference mRef;
+    TextView chanl;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        final String user=getIntent().getStringExtra("User");
+        final messageAdapter adapter = new messageAdapter(arrayMssg,user);
+        setContentView(R.layout.activity_output__chatroom);
+        intializeUI();
+        mssgRecycler.setAdapter(adapter);
+        arrayMssg.add(new message("2","01:20","1","Message"));
+        final LinearLayoutManager mlay=new LinearLayoutManager(this);
+        mssgRecycler.setLayoutManager(mlay);
+        mDatabase =FirebaseDatabase.getInstance();
+        String chnl= getIntent().getStringExtra("Name");
+        chanl.setText(chnl);
+
+        mRef= (DatabaseReference) mDatabase.getReference().child(chnl).child("Messages");
+        mRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                arrayMssg.clear();
+                for(DataSnapshot snap:snapshot.getChildren()){
+                    message msg=new message(snap.child("mssgId").getValue().toString(),snap.child("timeStamp").getValue().toString(),snap.child("senderId").getValue().toString(),snap.child("mssg").getValue().toString());
+                    arrayMssg.add(msg);
+
+                    mlay.smoothScrollToPosition(mssgRecycler,null,adapter.getItemCount()-1);
+                }
+                adapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),LinkPage.class));
+            }
+        });
+
+        sendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Date date= new Date();
+                String d= date.toString().substring(11,16);
+
+
+
+
+                if(!mssgBox.getText().toString().isEmpty())
+                {
+                    mRef.child(date.toString()).setValue(new message("2",d,user,mssgBox.getText().toString()));
+                    adapter.notifyDataSetChanged();
+
+
+                mssgBox.setText("");
+                    mlay.smoothScrollToPosition(mssgRecycler,null,adapter.getItemCount()-1);}
+            }
+        });
+        mlay.setStackFromEnd(true);
+        mlay.smoothScrollToPosition(mssgRecycler,null,adapter.getItemCount()-1);
+
+
+
+    }
+
+    private void intializeUI() {
+        mssgBox =(EditText) findViewById(R.id.txtMessageText);
+        sendBtn=(ImageButton) findViewById(R.id.btnSend);
+        sendPgr=(ProgressBar) findViewById(R.id.pgrSend);
+        mssgRecycler=(RecyclerView) findViewById(R.id.recyclerMessages);
+        img=(Button)findViewById(R.id.btnCancel);
+        chanl=(TextView)findViewById(R.id.ChannelName);
+
+    }
+}
