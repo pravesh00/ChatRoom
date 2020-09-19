@@ -84,6 +84,7 @@ public class messageAdapter extends RecyclerView.Adapter<messageAdapter.messageV
             user=itemView.findViewById(R.id.txtUsername);
 
 
+
         }
     }
 }

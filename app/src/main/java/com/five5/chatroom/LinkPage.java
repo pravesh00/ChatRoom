@@ -22,6 +22,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Date;
 
 public class LinkPage extends AppCompatActivity {
@@ -30,6 +37,8 @@ public class LinkPage extends AppCompatActivity {
     ProgressBar createPgr,joinPgr;
     FirebaseDatabase mDatabase;
     DatabaseReference dRef;
+    String Username,ChatroomId;
+
 
 
 
@@ -38,7 +47,15 @@ public class LinkPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_link_page);
         intializeUI();
+        read();
+        if(!ChatroomId.toString().isEmpty()){
+            Intent i = new Intent(this,Output_Chatroom.class);
+            i.putExtra("Name",ChatroomId.toString());
+            i.putExtra("User",Username);
+            startActivity(i);
 
+        }
+   
         mDatabase =FirebaseDatabase.getInstance();
         dRef =mDatabase.getReference();
         createButton.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +94,7 @@ public class LinkPage extends AppCompatActivity {
             i.putExtra("Name",ChannelName);
             i.putExtra("User",user);
             startActivity(i);
+            writeData(user,ChannelName);
 
             finish();
             joinText.setTextColor(Color.parseColor("#C5A4EB"));
@@ -134,6 +152,55 @@ public class LinkPage extends AppCompatActivity {
         okButton=(Button) findViewById(R.id.btnOK);
 
     }
+    //read and store data in String var
+    public void read(){
+        String a=getData();
+        try {
+            final JSONObject aa=new JSONObject(a);
+            Username=aa.getString("Name");
+            ChatroomId=aa.getString("Id");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+    //File to string convertor
+    public String getData(){
+        String a="";
+        try {
+            FileInputStream io= openFileInput("X");
+
+            int c;
+            while((c=io.read())!=-1){
+                a=a+ (char) c;
+            }
+            io.close();
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return a;
+    }
+    //JSonarray to file convertor
+    public void writeData(String n,String i) {
+        JSONObject j=new JSONObject();
+
+
+        try {
+            j.put("Name",n);
+            j.put("Id",i);
+            FileOutputStream fi= openFileOutput("X",MODE_PRIVATE);
+            fi.write(j.toString().getBytes());
+            fi.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }}
 
 
 }

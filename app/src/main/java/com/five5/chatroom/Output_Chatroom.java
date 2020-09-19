@@ -2,6 +2,7 @@ package com.five5.chatroom;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +26,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -79,6 +86,7 @@ public class Output_Chatroom extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(),LinkPage.class));
+                writeData();
             }
         });
 
@@ -117,4 +125,21 @@ public class Output_Chatroom extends AppCompatActivity {
         chanl=(TextView)findViewById(R.id.ChannelName);
 
     }
+    //JSonarray to file convertor
+    public void writeData() {
+        JSONObject j=new JSONObject();
+
+
+        try {
+            j.put("Name","");
+            j.put("Id","");
+            FileOutputStream fi= openFileOutput("X",MODE_PRIVATE);
+            fi.write(j.toString().getBytes());
+            fi.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }}
+
 }
