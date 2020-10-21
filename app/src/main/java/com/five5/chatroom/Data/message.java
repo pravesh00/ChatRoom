@@ -3,22 +3,16 @@ package com.five5.chatroom.Data;
 public class message {
     String mssgId,timeStamp,senderId,mssg;
 
+
     public message(String mssgId, String timeStamp, String senderId, String mssg) {
         this.mssgId = mssgId;
         this.timeStamp = timeStamp;
         this.senderId = senderId;
         this.mssg = mssg;
+
     }
 
-    public String getMssg() {
-        return mssg;
-    }
-
-    public void setMssg(String mssg) {
-        this.mssg = mssg;
-    }
-
-    public message(String mssgId, long time, String senderId, String mssg) {
+    public message() {
     }
 
     public String getMssgId() {
@@ -44,4 +38,14 @@ public class message {
     public void setSenderId(String senderId) {
         this.senderId = senderId;
     }
+
+    public String getMssg() {
+        return mssg;
+    }
+
+    public void setMssg(String mssg) {
+        this.mssg = mssg;
+    }
+
+
 }

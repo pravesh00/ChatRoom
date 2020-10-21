@@ -1,59 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@android:color/white">
 
-    <TextView
-        android:id="@+id/lblPhoneNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Phone Number"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.327" />
+    <ImageView
+        android:layout_width="300sp"
+        android:layout_height="300sp"
+        android:src="@drawable/couple_in_love_illustration"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="150sp" ></ImageView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200sp"
+        android:id="@+id/relBottom"
+        android:layout_alignParentBottom="true"
+        android:background="@color/cardview_dark_background"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80sp"
+            android:text="+91"
+            android:id="@+id/txt91"
+            android:textSize="22sp"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/roboto_medium"
+            android:layout_marginLeft="50sp"></TextView>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter Number"
+            app:hintTextColor="@android:color/white"
+            android:textColorHint="@android:color/white"
+            android:layout_toRightOf="@+id/txt91"
+            android:layout_marginTop="70sp"
+            android:layout_marginLeft="20sp"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="200sp"
+                android:id="@+id/txtPhone"
+                android:layout_height="50sp"
+                android:fontFamily="@font/roboto"
+                android:textSize="16sp"
+                android:inputType="number"
+                android:maxLength="10"
+                android:textColorHint="@android:color/white"
+                android:textColor="@android:color/white"></com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/txtPhoneNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:ems="10"
-        android:inputType="phone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblPhoneNumber"
-        app:layout_constraintVertical_bias="0.0" />
+        <ImageButton
+            android:id="@+id/btnNext"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/ic_baseline_arrow_forward_24"
+            android:layout_margin="10sp"
+            android:background="#00000000"
+            ></ImageButton>
+    </RelativeLayout>
 
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="39dp"
-        android:text="Login"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.693"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtPhoneNumber"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <EditText
-        android:id="@+id/txtOTP"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="OTP"
-        android:inputType="textPersonName"
-        android:text="Name"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtPhoneNumber"
-        app:layout_constraintVertical_bias="0.371" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

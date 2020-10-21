@@ -48,14 +48,14 @@ public class LinkPage extends AppCompatActivity {
         setContentView(R.layout.activity_link_page);
         intializeUI();
         read();
-        if(!ChatroomId.toString().isEmpty()){
-            Intent i = new Intent(this,Output_Chatroom.class);
-            i.putExtra("Name",ChatroomId.toString());
-            i.putExtra("User",Username);
-            startActivity(i);
+//        if(!ChatroomId.toString().isEmpty()){
+  //          Intent i = new Intent(this,Output_Chatroom.class);
+    //        i.putExtra("Name",ChatroomId.toString());
+      //      i.putExtra("User",Username);
+        //    startActivity(i);
 
-        }
-   
+        //}
+
         mDatabase =FirebaseDatabase.getInstance();
         dRef =mDatabase.getReference();
         createButton.setOnClickListener(new View.OnClickListener() {
@@ -91,41 +91,19 @@ public class LinkPage extends AppCompatActivity {
         }else user=userText.getText().toString();
         if(!ChannelName.isEmpty()){
             Intent i = new Intent(this,Output_Chatroom.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.putExtra("Name",ChannelName);
             i.putExtra("User",user);
+            
             startActivity(i);
+
             writeData(user,ChannelName);
 
             finish();
             joinText.setTextColor(Color.parseColor("#C5A4EB"));
             joinText.setEnabled(false);
         }
-        dRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
     }
 

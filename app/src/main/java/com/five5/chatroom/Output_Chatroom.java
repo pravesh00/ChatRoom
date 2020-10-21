@@ -20,11 +20,16 @@ import android.widget.TextView;
 
 import com.five5.chatroom.Adapter.messageAdapter;
 import com.five5.chatroom.Data.message;
+import com.five5.chatroom.restapi.notificationAPI;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,7 +38,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Output_Chatroom extends AppCompatActivity {
     EditText mssgBox;
@@ -59,8 +71,13 @@ public class Output_Chatroom extends AppCompatActivity {
         final LinearLayoutManager mlay=new LinearLayoutManager(this);
         mssgRecycler.setLayoutManager(mlay);
         mDatabase =FirebaseDatabase.getInstance();
-        String chnl= getIntent().getStringExtra("Name");
+        final String chnl= getIntent().getStringExtra("Name");
         chanl.setText(chnl);
+
+        final Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://fcm.googleapis.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
         mRef= (DatabaseReference) mDatabase.getReference().child(chnl).child("Messages");
         mRef.addValueEventListener(new ValueEventListener() {
@@ -85,7 +102,7 @@ public class Output_Chatroom extends AppCompatActivity {
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),LinkPage.class));
+                startActivity(new Intent(getApplicationContext(),subscribedChannels.class));
                 writeData();
             }
         });
@@ -99,18 +116,54 @@ public class Output_Chatroom extends AppCompatActivity {
 
 
 
+
                 if(!mssgBox.getText().toString().isEmpty())
                 {
-                    mRef.child(date.toString()).setValue(new message("2",d,user,mssgBox.getText().toString()));
+                    mRef.child(String.valueOf(date.getTime())).setValue(new message("2",d,user,mssgBox.getText().toString()));
                     adapter.notifyDataSetChanged();
 
 
-                mssgBox.setText("");
-                    mlay.smoothScrollToPosition(mssgRecycler,null,adapter.getItemCount()-1);}
+
+                    mlay.smoothScrollToPosition(mssgRecycler,null,adapter.getItemCount()-1);
+                  notificationAPI api = retrofit.create(notificationAPI.class);
+                    JsonObject notify = new JsonObject();
+                    String a="/topics/"+chnl;
+                    notify.addProperty("to",a);
+                    JsonObject notification = new JsonObject();
+                    notification.addProperty("title",user);
+                    notification.addProperty("body",mssgBox.getText().toString());
+                    notify.add("notification",notification);
+                    JsonObject data =new JsonObject();
+                    data.addProperty("senderName", FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                    notify.add("data",data);
+                    mssgBox.setText("");
+                    Call<JsonObject> call = api.sendnotification(notify);
+                    call.enqueue(new Callback<JsonObject>() {
+                        @Override
+                        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                            Log.e("send",response.message());
+                            if(response.isSuccessful()){
+                                Log.e("Success","Done");
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<JsonObject> call, Throwable t) {
+                            Log.e("Fail",t.getMessage());
+
+                        }
+                    });
+
+
+
+                }
             }
         });
         mlay.setStackFromEnd(true);
         mlay.smoothScrollToPosition(mssgRecycler,null,adapter.getItemCount()-1);
+        FirebaseMessaging.getInstance().getToken();
+        FirebaseMessaging.getInstance().subscribeToTopic(chnl);
 
 
 
