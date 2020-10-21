@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@android:color/white">
+
+    <ImageView
+        android:layout_width="300sp"
+        android:layout_height="300sp"
+        android:src="@drawable/couple_in_love_illustration"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="150sp" ></ImageView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200sp"
+        android:id="@+id/relBottom"
+        android:layout_alignParentBottom="true"
+        android:background="@color/cardview_dark_background"
+        >
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_margin="10sp"
+            android:layout_width="80sp"
+            android:layout_height="60sp"
+            android:background="#00000000"
+            android:src="@drawable/ic_baseline_arrow_back_24"></ImageButton>
+
+
+        <EditText
+            android:layout_width="200sp"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtOtp"
+            android:hint="Enter OTP"
+            android:maxLength="6"
+            app:hintTextColor="@android:color/white"
+            android:textColorHint="@android:color/white"
+
+            android:layout_marginTop="70sp"
+            android:fontFamily="@font/roboto"
+            android:textSize="18sp"
+            android:inputType="number"
+            android:textColor="@android:color/white"
+            android:layout_centerHorizontal="true"
+            >
+
+        </EditText>
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/btnNew"
+
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/ic_baseline_arrow_forward_24"
+        android:layout_margin="20sp"
+        android:background="#00000000"
+        />
+
+
+
+</RelativeLayout>

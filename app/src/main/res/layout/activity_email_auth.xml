@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@android:color/white">
+
+    <ImageView
+        android:layout_width="300sp"
+        android:layout_height="300sp"
+        android:src="@drawable/couple_in_love_illustration"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="150sp" ></ImageView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200sp"
+        android:id="@+id/relBottom"
+        android:layout_alignParentBottom="true"
+        android:background="@color/cardview_dark_background"
+        >
+
+        <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Enter Email"
+        app:hintTextColor="@android:color/white"
+        android:textColorHint="@android:color/white"
+        android:layout_toRightOf="@+id/txt91"
+        android:layout_marginTop="30sp"
+            android:layout_centerHorizontal="true"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="200sp"
+            android:id="@+id/txtEmail"
+            android:layout_height="50sp"
+            android:fontFamily="@font/roboto"
+            android:textSize="16sp"
+            android:inputType="textEmailAddress"
+
+            android:textColorHint="@android:color/white"
+            android:textColor="@android:color/white"></com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter Password"
+            app:hintTextColor="@android:color/white"
+            android:textColorHint="@android:color/white"
+            android:layout_toRightOf="@+id/txt91"
+            android:layout_marginTop="80sp"
+            android:layout_marginLeft="20sp"
+            android:layout_centerHorizontal="true"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="200sp"
+                android:id="@+id/txtPass"
+                android:layout_height="50sp"
+                android:fontFamily="@font/roboto"
+                android:textSize="16sp"
+                android:inputType="textPassword"
+
+
+                android:textColorHint="@android:color/white"
+                android:textColor="@android:color/white"></com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/btnLogin"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/ic_baseline_arrow_forward_24"
+            android:layout_margin="10sp"
+            android:background="#00000000"
+            ></ImageButton>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Register"
+            android:id="@+id/txtRegister"
+            android:textColor="@android:color/white"
+            android:clickable="true"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="10sp"
+            android:layout_marginTop="160sp"
+            android:layout_marginLeft="120sp"
+            ></TextView>
+    </RelativeLayout>
+
+</RelativeLayout>
