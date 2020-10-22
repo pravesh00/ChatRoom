@@ -1,66 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    android:layout_marginRight="0sp"
+    android:gravity="left"
+
     android:background="@drawable/received_mssg_bg"
-    android:padding="10sp"
+    android:padding="7sp"
     android:layout_margin="5sp"
 
 
-    android:layout_alignParentEnd="true"
+    android:layout_alignParentStart="true"
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
+
     <TextView
 
+        android:id="@+id/txtUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="-Me"
         android:layout_alignParentBottom="true"
 
         android:gravity="right"
+        android:text="-Me"
         android:textColor="@android:color/holo_purple"
+
+
         android:textSize="10dp"
-        android:layout_marginLeft="10sp"
 
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.074"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"></TextView>
 
-        android:id="@+id/txtUsername"
-
-        ></TextView>
     <TextView
+        android:id="@+id/txtReceiveMssg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Messagjgiijjj djkdlddcnccnmmdkjje"
-        android:id="@+id/txtReceiveMssg"
-        android:fontFamily="@font/roboto"
-
         android:layout_margin="10sp"
 
+        android:fontFamily="@font/roboto"
 
 
-        android:textSize="20sp"
+        android:text="Messa"
         android:textColor="#20639B"
-        android:paddingBottom="10dp"></TextView>
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintStart_toEndOf="@+id/proImg"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.6"></TextView>
 
     <TextView
+        android:id="@+id/txtTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="10sp"
-        android:layout_marginBottom="10sp"
+
+        android:text="6:02"
         android:textColor="@android:color/holo_purple"
 
         android:textSize="10dp"
-        android:id="@+id/txtTime"
 
-        android:text="6:02"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.98"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtReceiveMssg"
+        app:layout_constraintVertical_bias="0.2"></TextView>
 
-        ></TextView>
+    <ImageView
+        android:id="@+id/proImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtUsername"
+        app:layout_constraintVertical_bias="0.08"
+        android:layout_marginRight="0dp"
+        android:paddingRight="0dp"
+        app:srcCompat="@drawable/ic_baseline_person_24" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
