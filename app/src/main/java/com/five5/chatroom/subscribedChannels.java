@@ -23,7 +23,7 @@ import android.widget.TextView;
 
 
 import com.five5.chatroom.Adapter.ChannelAdapter;
-import com.five5.chatroom.Adapter.searchAdapter;
+
 import com.five5.chatroom.Data.SubChannel;
 import com.five5.chatroom.Data.chnnl;
 import com.five5.chatroom.Data.user;
@@ -124,8 +124,28 @@ public class subscribedChannels extends AppCompatActivity {
             }
         });
         mref = FirebaseDatabase.getInstance().getReference();
-        {refresh();
-            {mAdapter.notifyDataSetChanged();}}
+        {mAdapter.changeLayout(0);
+            channels.clear();
+            Query q=mref.child("Users").orderByChild("email").equalTo(userEmail);
+            q.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Log.e("Chnls",snapshot.getChildren().toString());
+                    for(DataSnapshot m: snapshot.getChildren()){
+                        user u = m.getValue(user.class);
+                        Log.e("mail",u.getEmail());
+                        ArrayList<SubChannel> x= u.getChnls();
+                        for(SubChannel c:x){
+                            checkChannelandAdd(c.getName());
+                            Log.e("name",c.getName());
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });}
 
         mChannel = findViewById(R.id.channelRecyclerView);
         mChannel.setLayoutManager(manager);

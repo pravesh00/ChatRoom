@@ -66,7 +66,7 @@ public class Output_Chatroom extends AppCompatActivity {
         setContentView(R.layout.activity_output__chatroom);
         intializeUI();
         mssgRecycler.setAdapter(adapter);
-        arrayMssg.add(new mssg("2","01:20", (long) 9,"Message"));
+        arrayMssg.add(new mssg("Loading Messages...","", (long) 0,"Please Wait"));
         final LinearLayoutManager mlay=new LinearLayoutManager(this);
         mssgRecycler.setLayoutManager(mlay);
         mDatabase =FirebaseDatabase.getInstance();
@@ -147,7 +147,7 @@ public class Output_Chatroom extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(),subscribedChannels.class));
-                writeData();
+
             }
         });
 
@@ -231,21 +231,6 @@ public class Output_Chatroom extends AppCompatActivity {
         chanl=(TextView)findViewById(R.id.ChannelName);
 
     }
-    //JSonarray to file convertor
-    public void writeData() {
-        JSONObject j=new JSONObject();
 
-
-        try {
-            j.put("Name","");
-            j.put("Id","");
-            FileOutputStream fi= openFileOutput("X",MODE_PRIVATE);
-            fi.write(j.toString().getBytes());
-            fi.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-        }}
 
 }
