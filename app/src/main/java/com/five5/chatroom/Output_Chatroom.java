@@ -2,7 +2,6 @@ package com.five5.chatroom;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,13 +12,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.five5.chatroom.Adapter.messageAdapter;
-import com.five5.chatroom.Data.message;
+import com.five5.chatroom.Data.mssg;
 import com.five5.chatroom.restapi.notificationAPI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -28,7 +25,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.gson.JsonObject;
 
 import org.json.JSONException;
@@ -38,7 +34,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import retrofit2.Call;
@@ -52,7 +47,7 @@ public class Output_Chatroom extends AppCompatActivity {
     ImageButton sendBtn;
     ProgressBar sendPgr;
     RecyclerView mssgRecycler;
-    ArrayList<message> arrayMssg= new ArrayList<>();
+    ArrayList<mssg> arrayMssg= new ArrayList<>();
     Button img;
 
     FirebaseDatabase mDatabase;
@@ -67,7 +62,7 @@ public class Output_Chatroom extends AppCompatActivity {
         setContentView(R.layout.activity_output__chatroom);
         intializeUI();
         mssgRecycler.setAdapter(adapter);
-        arrayMssg.add(new message("2","01:20","1","Message"));
+        arrayMssg.add(new mssg("2","01:20", (long) 9,"Message"));
         final LinearLayoutManager mlay=new LinearLayoutManager(this);
         mssgRecycler.setLayoutManager(mlay);
         mDatabase =FirebaseDatabase.getInstance();
@@ -85,7 +80,7 @@ public class Output_Chatroom extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 arrayMssg.clear();
                 for(DataSnapshot snap:snapshot.getChildren()){
-                    message msg=new message(snap.child("mssgId").getValue().toString(),snap.child("timeStamp").getValue().toString(),snap.child("senderId").getValue().toString(),snap.child("mssg").getValue().toString());
+                    mssg msg=new mssg(snap.child("text").getValue().toString(),snap.child("time").getValue().toString(),Long.parseLong(snap.child("millis").getValue().toString()),snap.child("sender").getValue().toString());
                     arrayMssg.add(msg);
 
                     mlay.smoothScrollToPosition(mssgRecycler,null,adapter.getItemCount()-1);
@@ -119,7 +114,7 @@ public class Output_Chatroom extends AppCompatActivity {
 
                 if(!mssgBox.getText().toString().isEmpty())
                 {
-                    mRef.child(String.valueOf(date.getTime())).setValue(new message("2",d,user,mssgBox.getText().toString()));
+                    mRef.child(String.valueOf(date.getTime())).setValue(new mssg(mssgBox.getText().toString(),d,date.getTime(),FirebaseAuth.getInstance().getCurrentUser().getEmail()));
                     adapter.notifyDataSetChanged();
 
 

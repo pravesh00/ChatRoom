@@ -1,6 +1,5 @@
 package com.five5.chatroom.Adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,17 +8,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.five5.chatroom.Data.message;
+import com.five5.chatroom.Data.mssg;
 import com.five5.chatroom.R;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 public class messageAdapter extends RecyclerView.Adapter<messageAdapter.messageViewHolder> {
-    ArrayList<message> messages;
+    ArrayList<mssg> messages;
     String sId="0";
 
-    public messageAdapter(ArrayList<message> messages,String s) {
+    public messageAdapter(ArrayList<mssg> messages,String s) {
         this.messages = messages;
         this.sId=s;
 
@@ -43,7 +41,7 @@ public class messageAdapter extends RecyclerView.Adapter<messageAdapter.messageV
 
     @Override
     public int getItemViewType(int position) {
-        if(messages.get(position).getSenderId().equals(sId)) {
+        if(messages.get(position).getSender().equals(sId)) {
         return 0;
         }else{
             return 1;
@@ -54,13 +52,13 @@ public class messageAdapter extends RecyclerView.Adapter<messageAdapter.messageV
 
     @Override
     public void onBindViewHolder(@NonNull messageViewHolder holder, int position) {
-        message curMssg=messages.get(position);
-        holder.txtMess.setText(curMssg.getMssg());
-        holder.txtTimeStamp.setText(curMssg.getTimeStamp());
-        holder.user.setText("--"+curMssg.getSenderId());
+        mssg curMssg=messages.get(position);
+        holder.txtMess.setText(curMssg.getText());
+        holder.txtTimeStamp.setText(curMssg.getTime());
+        holder.user.setText("--"+curMssg.getSender());
 
     }
-    public void updateList (ArrayList<message> items) {
+    public void updateList (ArrayList<mssg> items) {
 
 
             messages.clear();

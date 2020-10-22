@@ -1,24 +1,17 @@
 package com.five5.chatroom;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.five5.chatroom.Data.message;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.five5.chatroom.Data.mssg;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -110,7 +103,7 @@ public class LinkPage extends AppCompatActivity {
     private void createLink() {
         if(!createText.getText().toString().isEmpty()){
             Date date = new Date();
-            dRef.child(createText.getText().toString()).child("Messages").child(date.toString()).setValue(new message("1","","admin","Welcome To Chatroom"));
+            dRef.child(createText.getText().toString()).child("Messages").child(date.toString()).setValue(new mssg("1","", (long) 7777777,"Welcome To Chatroom"));
             createPgr.setVisibility(View.INVISIBLE);
             Toast.makeText(this,"Channel created",Toast.LENGTH_LONG).show();
             createText.setEnabled(false);
