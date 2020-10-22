@@ -23,7 +23,8 @@
         <activity
             android:name=".Output_Chatroom"
             android:alwaysRetainTaskState="true"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:resizeableActivity="true"
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".LinkPage">
 
         </activity>

@@ -55,7 +55,7 @@ public class messageAdapter extends RecyclerView.Adapter<messageAdapter.messageV
         mssg curMssg=messages.get(position);
         holder.txtMess.setText(curMssg.getText());
         holder.txtTimeStamp.setText(curMssg.getTime());
-        holder.user.setText("--"+curMssg.getSender());
+        holder.user.setText(curMssg.getSender());
 
     }
     public void updateList (ArrayList<mssg> items) {

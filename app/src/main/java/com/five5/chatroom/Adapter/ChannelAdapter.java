@@ -67,6 +67,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.channelV
         final chnnl curr= channels.get(position);
         holder.name.setText(curr.getName());
         holder.lstMssg.setText(curr.getLstMssg());
+        if(layout==R.layout.channel_layout)
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
