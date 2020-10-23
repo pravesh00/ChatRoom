@@ -67,7 +67,7 @@ public class Output_Chatroom extends AppCompatActivity {
         setContentView(R.layout.activity_output__chatroom);
         intializeUI();
         InputMethodService imm;
-
+        mssgRecycler.setAdapter(adapter);
         arrayMssg.add(new mssg("Loading Messages...","", (long) 0,"Please Wait"));
         final LinearLayoutManager mlay=new LinearLayoutManager(this);
         mssgRecycler.setLayoutManager(mlay);
