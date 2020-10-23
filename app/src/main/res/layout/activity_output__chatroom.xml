@@ -52,6 +52,7 @@
                 android:layout_marginLeft="20sp"
                 android:src="@drawable/icon2"></ImageView>
 
+
             <TextView
                 android:id="@+id/ChannelName"
                 android:layout_width="wrap_content"
@@ -66,6 +67,7 @@
                 android:textSize="22sp"></TextView>
 
             <TextView
+
                 android:id="@+id/txtTypeStatus"
                 style="@style/type"
                 android:layout_width="131dp"
@@ -101,7 +103,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerMessages"
 
-        android:layout_width="411dp"
+        android:layout_width="match_parent"
+
         android:layout_height="fill_parent"
         android:layout_marginTop="20sp"
         android:layout_marginBottom="30sp"

@@ -25,6 +25,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import java.util.HashMap;
+
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link channel_new#newInstance} factory method to
@@ -81,20 +84,40 @@ public class channel_new extends Fragment {
         }
         mref = FirebaseDatabase.getInstance().getReference();
 
-        channels.clear();
+
         Query q=mref.child("Users").orderByChild("email").equalTo(email);
         q.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Log.e("Chnls",snapshot.toString());
                 for(DataSnapshot m: snapshot.getChildren()){
-                    user u = m.getValue(user.class);
-                    Log.e("mail",u.getEmail());
-                    ArrayList<SubChannel> x= u.getChnls();
-                    for(SubChannel c:x){
-                        checkChannelandAdd(c.getName());
-                        Log.e("name",c.getName());
+
+                    channels.clear();
+
+
+                    try{
+                        mref.child("Users").child(m.getKey()).child("chnls").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for(DataSnapshot s:snapshot.getChildren()){
+                                    SubChannel a=s.getValue(SubChannel.class);
+                                    checkChannelandAdd(a.getName());
+                                    Log.e("Channelz",s.toString());
+                                }
+                                Log.e("Channelz",snapshot.toString());
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    } catch (Exception e) {
+
                     }
+
+
+
                 }
             }
 
@@ -111,7 +134,9 @@ public class channel_new extends Fragment {
         // Inflate the layout for this fragment
         View v=inflater.inflate(R.layout.fragment_channel_new, container, false);
         LinearLayoutManager manager = new LinearLayoutManager(v.getContext());
-        mAdapter=new ChannelAdapter(channels,v.getContext(),"");
+
+        mAdapter=new ChannelAdapter(channels,v.getContext(),email);
+
         mChannel=(RecyclerView)v.findViewById(R.id.channelRecycle);
         mChannel.setAdapter(mAdapter);
         mChannel.setLayoutManager(manager);

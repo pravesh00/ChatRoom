@@ -18,12 +18,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class emailAuth extends AppCompatActivity {
     TextView txtRegister;
@@ -78,14 +83,28 @@ public class emailAuth extends AppCompatActivity {
     }
 
     private void addUser() {
-        ArrayList<SubChannel> subChannels = new ArrayList<>();
-        subChannels.add(new SubChannel("ChatRoom"));
+        //HashMap<String,SubChannel> subChannels = new HashMap<>();
+        //subChannels.put("yytdtuuu",new SubChannel("ChatRoom"));
         user newUser =new user();
         newUser.setEmail(txtEmail.getText().toString());
         newUser.setPass(txtPass.getText().toString());
-        newUser.setChnls(subChannels);
-        DatabaseReference mRef= FirebaseDatabase.getInstance().getReference().child("Users");
+        //newUser.setChnls(subChannels);
+        final DatabaseReference mRef= FirebaseDatabase.getInstance().getReference().child("Users");
         mRef.push().setValue(newUser);
+        Query q=mRef.orderByChild("email").equalTo(newUser.getEmail());
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot s:snapshot.getChildren()){
+                    mRef.child(s.getKey()).child("chnls").push().setValue(new SubChannel(""));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void login() {
