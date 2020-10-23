@@ -79,6 +79,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.channelV
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 deleteSubChannel(curr.getName());
 
                     Toast.makeText(c,"Deleted",Toast.LENGTH_SHORT).show();
@@ -129,6 +130,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.channelV
             }
         });
     }
+
 
 
     @Override
