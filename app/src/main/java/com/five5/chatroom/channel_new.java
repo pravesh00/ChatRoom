@@ -94,6 +94,7 @@ public class channel_new extends Fragment {
 
                     channels.clear();
 
+
                         mref.child("Users").child(m.getKey()).child("chnls").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
