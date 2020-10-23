@@ -67,7 +67,7 @@ public class Output_Chatroom extends AppCompatActivity {
         final messageAdapter adapter = new messageAdapter(arrayMssg,user);
         setContentView(R.layout.activity_output__chatroom);
         intializeUI();
-        //InputMethodService imm;
+
 
         arrayMssg.add(new mssg("Loading Messages...","", (long) 0,"Please Wait"));
         final LinearLayoutManager mlay=new LinearLayoutManager(this);
@@ -76,7 +76,9 @@ public class Output_Chatroom extends AppCompatActivity {
         final String chnl= getIntent().getStringExtra("Name");
         chanl.setText(chnl);
         status=(TextView)findViewById(R.id.txtTypeStatus);
+
         mssgRecycler.setAdapter(adapter);
+
         DatabaseReference dref=FirebaseDatabase.getInstance().getReference().child("Status").child(chnl);
         dref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -127,7 +129,9 @@ public class Output_Chatroom extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
+
         mRef= mRef.child("Messages").child(chnl);
+
         mRef.orderByChild("millis").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -221,6 +225,13 @@ public class Output_Chatroom extends AppCompatActivity {
 
 
 
+
+
+    }
+
+    private void changeStatus(final String toString, final TextView status) {
+
+                status.setText(toString);
 
     }
 

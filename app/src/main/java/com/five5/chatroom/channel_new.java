@@ -24,7 +24,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -82,12 +84,14 @@ public class channel_new extends Fragment {
         }
         mref = FirebaseDatabase.getInstance().getReference();
 
+
         Query q=mref.child("Users").orderByChild("email").equalTo(email);
         q.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Log.e("Chnls",snapshot.toString());
                 for(DataSnapshot m: snapshot.getChildren()){
+
                     channels.clear();
 
                         mref.child("Users").child(m.getKey()).child("chnls").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -109,6 +113,7 @@ public class channel_new extends Fragment {
 
 
 
+
                 }
 
             }
@@ -126,7 +131,9 @@ public class channel_new extends Fragment {
         // Inflate the layout for this fragment
         View v=inflater.inflate(R.layout.fragment_channel_new, container, false);
         LinearLayoutManager manager = new LinearLayoutManager(v.getContext());
+
         mAdapter=new ChannelAdapter(channels,v.getContext(),email);
+
         mChannel=(RecyclerView)v.findViewById(R.id.channelRecycle);
         mChannel.setAdapter(mAdapter);
         mChannel.setLayoutManager(manager);
@@ -141,7 +148,6 @@ public class channel_new extends Fragment {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
 
                 for(DataSnapshot snapshot1:snapshot.getChildren()){
                     chnnl c= snapshot1.getValue(chnnl.class);
