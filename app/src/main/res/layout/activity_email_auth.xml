@@ -8,17 +8,19 @@
     android:background="@android:color/white">
 
     <ImageView
-        android:layout_width="300sp"
+        android:layout_width="150sp"
+        android:id="@+id/logo"
         android:layout_height="300sp"
-        android:src="@drawable/couple_in_love_illustration"
+        android:src="@drawable/icon"
         android:layout_centerHorizontal="true"
+        android:paddingLeft="20sp"
         android:layout_marginTop="150sp" ></ImageView>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200sp"
+        android:layout_height="200dp"
         android:id="@+id/relBottom"
         android:layout_alignParentBottom="true"
-        android:background="@color/cardview_dark_background"
+        android:background="@drawable/back"
         >
 
         <com.google.android.material.textfield.TextInputLayout
@@ -66,28 +68,34 @@
                 android:textColor="@android:color/white"></com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <ImageButton
+        <Button
             android:id="@+id/btnLogin"
-            android:layout_width="50sp"
-            android:layout_height="50sp"
-            android:layout_alignParentEnd="true"
+            android:layout_width="80sp"
+            android:layout_height="30sp"
+
             android:layout_alignParentBottom="true"
+            android:layout_marginStart="69dp"
+            android:layout_marginTop="10sp"
+            android:layout_marginEnd="215dp"
+
+            android:layout_marginBottom="20dp"
+            android:layout_toEndOf="@+id/txtRegister"
+            android:background="@drawable/button_bg"
             android:src="@drawable/ic_baseline_arrow_forward_24"
-            android:layout_margin="10sp"
-            android:background="#00000000"
-            ></ImageButton>
+            android:text="Login"
+            android:textColor="@color/cardview_light_background"></Button>
+
         <TextView
+            android:id="@+id/txtRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Register"
-            android:id="@+id/txtRegister"
-            android:textColor="@android:color/white"
+            android:layout_marginLeft="120sp"
+            android:layout_marginTop="160sp"
             android:clickable="true"
             android:fontFamily="@font/roboto_bold"
-            android:textSize="10sp"
-            android:layout_marginTop="160sp"
-            android:layout_marginLeft="120sp"
-            ></TextView>
+            android:text="Register"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"></TextView>
     </RelativeLayout>
 
 </RelativeLayout>

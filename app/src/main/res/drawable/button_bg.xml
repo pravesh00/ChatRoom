@@ -3,7 +3,8 @@
     <size android:width="103sp" android:height="41sp">
 
     </size>
-    <solid android:color="#5E1FA6"></solid>
+
     <corners android:radius="10sp"></corners>
+    <stroke android:color="@color/cardview_light_background" android:width="2sp"></stroke>
 
 </shape>
