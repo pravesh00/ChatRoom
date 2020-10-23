@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.inputmethodservice.InputMethodService;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -65,7 +66,8 @@ public class Output_Chatroom extends AppCompatActivity {
         final messageAdapter adapter = new messageAdapter(arrayMssg,user);
         setContentView(R.layout.activity_output__chatroom);
         intializeUI();
-        mssgRecycler.setAdapter(adapter);
+        InputMethodService imm;
+
         arrayMssg.add(new mssg("Loading Messages...","", (long) 0,"Please Wait"));
         final LinearLayoutManager mlay=new LinearLayoutManager(this);
         mssgRecycler.setLayoutManager(mlay);

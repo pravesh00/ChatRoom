@@ -38,11 +38,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class subscribedChannels extends AppCompatActivity {
-    RecyclerView mChannel;
-    ArrayList<chnnl> channels= new ArrayList<>();
+
     DatabaseReference mref;
-    ChannelAdapter mAdapter;
-    LinearLayoutManager manager = new LinearLayoutManager(this);
     Toolbar tool;
     FirebaseAuth mAuth;
     Button CreateChannel;
@@ -60,54 +57,25 @@ public class subscribedChannels extends AppCompatActivity {
 
 
         searchView=(SearchView) findViewById(R.id.search);
-        mAdapter = new ChannelAdapter(channels,getApplicationContext(),userEmail,searchView);
+
         tool = (Toolbar)findViewById(R.id.toolbar);
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
+        getSupportFragmentManager().beginTransaction().replace(R.id.channelRecyclerView,new channel_new(userEmail)).commit();
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-
-                mAdapter.changeLayout(1);
-
-                if(!newText.isEmpty())
-
-                {Query query = mref.child("Channels").orderByChild("name").startAt(newText).endAt(newText+"\uf8ff");
-                    channels.clear();
-
-
-                query.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        channels.clear();
-                        for(DataSnapshot snapshot1:snapshot.getChildren()){
-                            chnnl c= snapshot1.getValue(chnnl.class);
-                            Log.e("channel",c.getName());
-                            channels.add(c);
-                            mAdapter.notifyDataSetChanged();
-
-                        }
-                        Log.e("snap",snapshot.toString());
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });}
-                else{refresh();
-                mAdapter.notifyDataSetChanged();
-
-                }
-
-                return true;
+            public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.channelRecyclerView,new search_channel(searchView,userEmail)).commit();
             }
         });
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                getSupportFragmentManager().beginTransaction().replace(R.id.channelRecyclerView,new channel_new(userEmail)).commit();
+                return false;
+            }
+        });
+
+
         tool.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -123,61 +91,9 @@ public class subscribedChannels extends AppCompatActivity {
                 
             }
         });
-        mref = FirebaseDatabase.getInstance().getReference();
-        {mAdapter.changeLayout(0);
-            channels.clear();
-            Query q=mref.child("Users").orderByChild("email").equalTo(userEmail);
-            q.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    Log.e("Chnls",snapshot.getChildren().toString());
-                    for(DataSnapshot m: snapshot.getChildren()){
-                        user u = m.getValue(user.class);
-                        Log.e("mail",u.getEmail());
-                        ArrayList<SubChannel> x= u.getChnls();
-                        for(SubChannel c:x){
-                            checkChannelandAdd(c.getName());
-                            Log.e("name",c.getName());
-                        }
-                    }
-                }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                }
-            });}
-
-        mChannel = findViewById(R.id.channelRecyclerView);
-        mChannel.setLayoutManager(manager);
-        mChannel.setAdapter(mAdapter);
-        channels.add(new chnnl("Shitaap","Hye"));
     }
 
-    private void refresh() {
-
-        mAdapter.changeLayout(0);
-        channels.clear();
-        Query q=mref.child("Users").orderByChild("email").equalTo(userEmail);
-        q.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.e("Chnls",snapshot.getChildren().toString());
-                for(DataSnapshot m: snapshot.getChildren()){
-                    user u = m.getValue(user.class);
-                    Log.e("mail",u.getEmail());
-                    ArrayList<SubChannel> x= u.getChnls();
-                    for(SubChannel c:x){
-                        checkChannelandAdd(c.getName());
-                        Log.e("name",c.getName());
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-    }
 
 
     private void logout() {
@@ -276,29 +192,4 @@ public class subscribedChannels extends AppCompatActivity {
         }
     }
 
-    private void checkChannelandAdd(String n) {
-        Query query = mref.child("Channels").orderByChild("name").equalTo(n);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //channels.clear();
-                for(DataSnapshot snapshot1:snapshot.getChildren()){
-                    chnnl c= snapshot1.getValue(chnnl.class);
-                    Log.e("channel",c.getName());
-                    channels.add(c);
-
-
-
-                }
-                Log.e("snap",snapshot.toString());
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
 }

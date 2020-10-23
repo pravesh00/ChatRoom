@@ -33,7 +33,7 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <FrameLayout
         android:id="@+id/channelRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="673dp"

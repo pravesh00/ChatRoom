@@ -38,11 +38,11 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.channelV
     String email;
     SearchView searchView;
 
-    public ChannelAdapter(ArrayList<chnnl> channels, Context c, String s, SearchView searchView) {
+    public ChannelAdapter(ArrayList<chnnl> channels, Context c, String s) {
         this.channels = channels;
         this.c=c;
         this.email=s;
-        this.searchView=searchView;
+
     }
 
     public ChannelAdapter() {
