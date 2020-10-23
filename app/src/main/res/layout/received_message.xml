@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginRight="60sp"
+    android:layout_height="wrap_content"
+    android:layout_alignParentLeft="true">
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="left"
+    android:layout_marginRight="60sp"
 
     android:background="@drawable/received_mssg_bg"
     android:padding="7sp"
@@ -22,6 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginRight="25sp"
 
         android:gravity="right"
         android:text="-Me"
@@ -42,6 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10sp"
+        android:layout_marginRight="60sp"
 
         android:fontFamily="@font/roboto"
 
@@ -89,6 +97,7 @@
         app:srcCompat="@drawable/ic_baseline_person_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
 
 
 

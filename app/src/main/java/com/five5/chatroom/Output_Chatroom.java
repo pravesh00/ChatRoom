@@ -6,7 +6,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.inputmethodservice.InputMethodService;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -53,29 +57,76 @@ public class Output_Chatroom extends AppCompatActivity {
     FirebaseDatabase mDatabase;
     DatabaseReference mRef;
     TextView chanl;
+    TextView status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final String user=getIntent().getStringExtra("User");
+        final String user=FirebaseAuth.getInstance().getCurrentUser().getEmail();
         final messageAdapter adapter = new messageAdapter(arrayMssg,user);
         setContentView(R.layout.activity_output__chatroom);
         intializeUI();
-        mssgRecycler.setAdapter(adapter);
-        arrayMssg.add(new mssg("2","01:20", (long) 9,"Message"));
+        InputMethodService imm;
+
+        arrayMssg.add(new mssg("Loading Messages...","", (long) 0,"Please Wait"));
         final LinearLayoutManager mlay=new LinearLayoutManager(this);
         mssgRecycler.setLayoutManager(mlay);
         mDatabase =FirebaseDatabase.getInstance();
         final String chnl= getIntent().getStringExtra("Name");
         chanl.setText(chnl);
+        status=(TextView)findViewById(R.id.txtTypeStatus);
+        DatabaseReference dref=FirebaseDatabase.getInstance().getReference().child("Status").child(chnl);
+        dref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull final DataSnapshot snapshot) {
+                changeStatus(snapshot.getValue().toString(),status);
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        mssgBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                        FirebaseDatabase.getInstance().getReference().child("Status").child(chnl).setValue(user+" is typing...");
+
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        FirebaseDatabase.getInstance().getReference().child("Status").child(chnl).setValue("");
+                    }
+                },1500);
+
+
+
+            }
+        });
 
         final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://fcm.googleapis.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        mRef= (DatabaseReference) mDatabase.getReference().child(chnl).child("Messages");
-        mRef.addValueEventListener(new ValueEventListener() {
+        mRef= (DatabaseReference) mDatabase.getReference().child("Messages").child(chnl);
+        mRef.orderByChild("millis").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 arrayMssg.clear();
@@ -98,7 +149,7 @@ public class Output_Chatroom extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(),subscribedChannels.class));
-                writeData();
+
             }
         });
 
@@ -130,6 +181,8 @@ public class Output_Chatroom extends AppCompatActivity {
                     notify.add("notification",notification);
                     JsonObject data =new JsonObject();
                     data.addProperty("senderName", FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                    data.addProperty("channel",chnl);
+                    data.addProperty("id",FirebaseAuth.getInstance().getCurrentUser().getUid());
                     notify.add("data",data);
                     mssgBox.setText("");
                     Call<JsonObject> call = api.sendnotification(notify);
@@ -162,32 +215,24 @@ public class Output_Chatroom extends AppCompatActivity {
 
 
 
+
+    }
+
+    private void changeStatus(final String toString, final TextView status) {
+
+                status.setText(toString);
+
     }
 
     private void intializeUI() {
         mssgBox =(EditText) findViewById(R.id.txtMessageText);
         sendBtn=(ImageButton) findViewById(R.id.btnSend);
-        sendPgr=(ProgressBar) findViewById(R.id.pgrSend);
+
         mssgRecycler=(RecyclerView) findViewById(R.id.recyclerMessages);
         img=(Button)findViewById(R.id.btnCancel);
         chanl=(TextView)findViewById(R.id.ChannelName);
 
     }
-    //JSonarray to file convertor
-    public void writeData() {
-        JSONObject j=new JSONObject();
 
-
-        try {
-            j.put("Name","");
-            j.put("Id","");
-            FileOutputStream fi= openFileOutput("X",MODE_PRIVATE);
-            fi.write(j.toString().getBytes());
-            fi.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-        }}
 
 }
