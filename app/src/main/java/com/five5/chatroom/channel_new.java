@@ -24,6 +24,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -89,15 +90,26 @@ public class channel_new extends Fragment {
                 for(DataSnapshot m: snapshot.getChildren()){
                     channels.clear();
 
+
                     try{
-                    user u = m.getValue(user.class);
-                        Log.e("mail",u.getEmail());
-                        ArrayList<SubChannel> x= u.getChnls();
-                        for(SubChannel c:x){
-                            checkChannelandAdd(c.getName());
-                            Log.e("name",c.getName());
-                        }} catch (Exception e) {
-                        channels.add(new chnnl("",""));
+                        mref.child("Users").child(m.getKey()).child("chnls").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for(DataSnapshot s:snapshot.getChildren()){
+                                    SubChannel a=s.getValue(SubChannel.class);
+                                    checkChannelandAdd(a.getName());
+                                    Log.e("Channelz",s.toString());
+                                }
+                                Log.e("Channelz",snapshot.toString());
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    } catch (Exception e) {
+
                     }
 
 
@@ -129,9 +141,10 @@ public class channel_new extends Fragment {
     }
     private void checkChannelandAdd(String n) {
         Query query = mref.child("Channels").orderByChild("name").equalTo(n);
-        query.addValueEventListener(new ValueEventListener() {
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
 
                 for(DataSnapshot snapshot1:snapshot.getChildren()){
                     chnnl c= snapshot1.getValue(chnnl.class);

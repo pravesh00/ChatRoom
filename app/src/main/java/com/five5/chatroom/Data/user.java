@@ -1,13 +1,14 @@
 package com.five5.chatroom.Data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class user {
     String pass;
     String email;
-    ArrayList<SubChannel> chnls;
+    HashMap<String,SubChannel> chnls;
 
-    public user(String pass, String email, ArrayList<SubChannel> chnls) {
+    public user(String pass, String email, HashMap<String,SubChannel> chnls) {
         this.pass = pass;
         this.email = email;
         this.chnls = chnls;
@@ -32,11 +33,11 @@ public class user {
         this.email = email;
     }
 
-    public ArrayList<SubChannel> getChnls() {
+    public HashMap<String, SubChannel> getChnls() {
         return chnls;
     }
 
-    public void setChnls(ArrayList<SubChannel> chnls) {
+    public void setChnls(HashMap<String, SubChannel> chnls) {
         this.chnls = chnls;
     }
 }

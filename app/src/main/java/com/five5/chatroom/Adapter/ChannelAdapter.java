@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 
@@ -109,13 +110,16 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.channelV
         });
     }
 
-    private void deleteChannel(final String key, String name) {
+    private void deleteChannel(final String key, final String name) {
+
         Query q=mRef.child("Users").child(key).child("chnls").orderByChild("name").equalTo(name);
         q.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot d:snapshot.getChildren()){
                     mRef.child("Users").child(key).child("chnls").child(d.getKey()).setValue(null);
+                    FirebaseMessaging.getInstance().getToken();
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(name);
                 }
             }
 

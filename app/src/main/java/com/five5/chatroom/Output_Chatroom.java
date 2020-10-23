@@ -27,6 +27,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.JsonObject;
@@ -66,8 +67,8 @@ public class Output_Chatroom extends AppCompatActivity {
         final messageAdapter adapter = new messageAdapter(arrayMssg,user);
         setContentView(R.layout.activity_output__chatroom);
         intializeUI();
-        InputMethodService imm;
-        mssgRecycler.setAdapter(adapter);
+        //InputMethodService imm;
+
         arrayMssg.add(new mssg("Loading Messages...","", (long) 0,"Please Wait"));
         final LinearLayoutManager mlay=new LinearLayoutManager(this);
         mssgRecycler.setLayoutManager(mlay);
@@ -75,6 +76,7 @@ public class Output_Chatroom extends AppCompatActivity {
         final String chnl= getIntent().getStringExtra("Name");
         chanl.setText(chnl);
         status=(TextView)findViewById(R.id.txtTypeStatus);
+        mssgRecycler.setAdapter(adapter);
         DatabaseReference dref=FirebaseDatabase.getInstance().getReference().child("Status").child(chnl);
         dref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -134,7 +136,9 @@ public class Output_Chatroom extends AppCompatActivity {
                     mssg msg=new mssg(snap.child("text").getValue().toString(),snap.child("time").getValue().toString(),Long.parseLong(snap.child("millis").getValue().toString()),snap.child("sender").getValue().toString());
                     arrayMssg.add(msg);
                     Log.e("Messages",snap.toString());
+                    mssgRecycler.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
+
 
                     mlay.smoothScrollToPosition(mssgRecycler,null,adapter.getItemCount()-1);
                 }
@@ -167,8 +171,9 @@ public class Output_Chatroom extends AppCompatActivity {
 
                 if(!mssgBox.getText().toString().isEmpty())
                 {
-
+                    changeLastMssg(chnl,mssgBox.getText().toString());
                     adapter.notifyDataSetChanged();
+                    mRef.push().setValue(new mssg(mssgBox.getText().toString(),d,date.getTime(),FirebaseAuth.getInstance().getCurrentUser().getEmail()));
 
 
 
@@ -212,12 +217,29 @@ public class Output_Chatroom extends AppCompatActivity {
         });
         mlay.setStackFromEnd(true);
         mlay.smoothScrollToPosition(mssgRecycler,null,adapter.getItemCount()-1);
-        FirebaseMessaging.getInstance().getToken();
-        FirebaseMessaging.getInstance().subscribeToTopic(chnl);
 
 
 
 
+
+    }
+
+    private void changeLastMssg(String chnl, final String toString) {
+        final DatabaseReference mreference =FirebaseDatabase.getInstance().getReference();
+        Query query=mreference.child("Channels").orderByChild("name").equalTo(chnl);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot d:snapshot.getChildren()){
+                    mreference.child("Channels").child(d.getKey()).child("lstMssg").setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail()+": "+toString);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void changeStatus(final String toString, final TextView status) {

@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 
@@ -63,7 +64,7 @@ public class search_adapter extends RecyclerView.Adapter<search_adapter.channelV
     public void onBindViewHolder(@NonNull final channelViewHolder holder, int position) {
         final chnnl curr= channels.get(position);
         holder.name.setText(curr.getName());
-        holder.lstMssg.setText(curr.getLstMssg());
+        holder.lstMssg.setText("Subscribe It Now");
 
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +80,7 @@ public class search_adapter extends RecyclerView.Adapter<search_adapter.channelV
 
     private void subscribe(final chnnl u) {
 
+
         Query q=mRef.child("Users").orderByChild("email").equalTo(email);
         Log.e("ref",mRef.child("Users").orderByChild("email").equalTo(email).getRef().toString());
         String key;
@@ -87,8 +89,8 @@ public class search_adapter extends RecyclerView.Adapter<search_adapter.channelV
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 for(DataSnapshot s:snapshot.getChildren()){
-                    user c=s.getValue(user.class);
-                    addSub(s.getKey(),c,u.getName());
+
+                    addSub(s.getKey(),u.getName());
                 }
             }
 
@@ -101,10 +103,12 @@ public class search_adapter extends RecyclerView.Adapter<search_adapter.channelV
 
 
 
-    private void addSub(String key, user c,String n) {
+    private void addSub(String key,String n) {
         SubChannel a= new SubChannel(n);
-        c.getChnls().add(a);
-        mRef.child("Users").child(key).setValue(c);
+
+        mRef.child("Users").child(key).child("chnls").push().setValue(a);
+        FirebaseMessaging.getInstance().getToken();
+        FirebaseMessaging.getInstance().subscribeToTopic(n);
     }
 
 
