@@ -74,6 +74,7 @@ public class emailAuth extends AppCompatActivity {
 
             }
         });
+
     }
 
     private void addUser() {

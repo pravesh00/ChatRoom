@@ -117,7 +117,7 @@ public class channel_new extends Fragment {
         mChannel.setLayoutManager(manager);
         //channels.add(new chnnl("",""));
         mAdapter.notifyDataSetChanged();
-        mAdapter.changeLayout(0);
+
 
         return v;
     }

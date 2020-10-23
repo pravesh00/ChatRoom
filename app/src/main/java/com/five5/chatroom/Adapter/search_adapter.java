@@ -30,22 +30,22 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.channelViewHolder> {
+public class search_adapter extends RecyclerView.Adapter<search_adapter.channelViewHolder> {
     ArrayList<chnnl> channels;
     int layout=R.layout.channel_layout;
     Context c;
     DatabaseReference mRef= FirebaseDatabase.getInstance().getReference();
     String email;
-    SearchView searchView;
 
-    public ChannelAdapter(ArrayList<chnnl> channels, Context c, String s) {
+
+    public search_adapter(ArrayList<chnnl> channels, Context c, String s) {
         this.channels = channels;
         this.c=c;
         this.email=s;
 
     }
 
-    public ChannelAdapter() {
+    public search_adapter() {
     }
 
 
@@ -54,7 +54,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.channelV
     public channelViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = null;
 
-            view=LayoutInflater.from(parent.getContext()).inflate(R.layout.channel_layout,parent,false);
+            view=LayoutInflater.from(parent.getContext()).inflate(R.layout.search_channel,parent,false);
 
         return new channelViewHolder(view);
     }
@@ -64,27 +64,47 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.channelV
         final chnnl curr= channels.get(position);
         holder.name.setText(curr.getName());
         holder.lstMssg.setText(curr.getLstMssg());
-        if(layout==R.layout.channel_layout)
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(c, Output_Chatroom.class);
-                i.putExtra("User", FirebaseAuth.getInstance().getCurrentUser().getEmail());
-                i.putExtra("Name",curr.getName());
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                c.startActivity(i);
-            }
-        });
+
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                    Toast.makeText(c,"Deleted",Toast.LENGTH_SHORT).show();
-                   
+                    Toast.makeText(c,"Subscribed",Toast.LENGTH_SHORT).show();
+                    subscribe(curr);
 
             }
         });
 
+    }
+
+    private void subscribe(final chnnl u) {
+
+        Query q=mRef.child("Users").orderByChild("email").equalTo(email);
+        Log.e("ref",mRef.child("Users").orderByChild("email").equalTo(email).getRef().toString());
+        String key;
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for(DataSnapshot s:snapshot.getChildren()){
+                    user c=s.getValue(user.class);
+                    addSub(s.getKey(),c,u.getName());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
+
+    private void addSub(String key, user c,String n) {
+        SubChannel a= new SubChannel(n);
+        c.getChnls().add(a);
+        mRef.child("Users").child(key).setValue(c);
     }
 
 

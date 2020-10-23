@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 
 import com.five5.chatroom.Adapter.ChannelAdapter;
+import com.five5.chatroom.Adapter.search_adapter;
 import com.five5.chatroom.Data.chnnl;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,7 +40,7 @@ public class search_channel extends Fragment {
     RecyclerView mChannel;
     ArrayList<chnnl> channels= new ArrayList<>();
     DatabaseReference mref;
-    ChannelAdapter mAdapter;
+    search_adapter mAdapter;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -131,12 +132,12 @@ public class search_channel extends Fragment {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_search_channel, container, false);
         LinearLayoutManager manager = new LinearLayoutManager(v.getContext());
-        mAdapter=new ChannelAdapter(channels,v.getContext(),email);
+        mAdapter=new search_adapter(channels,v.getContext(),email);
         mChannel=(RecyclerView)v.findViewById(R.id.search);
         mChannel.setAdapter(mAdapter);
         mChannel.setLayoutManager(manager);
         mAdapter.notifyDataSetChanged();
-        mAdapter.changeLayout(1);
+
         return v;
     }
 }

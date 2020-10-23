@@ -26,6 +26,7 @@ import com.five5.chatroom.Adapter.ChannelAdapter;
 
 import com.five5.chatroom.Data.SubChannel;
 import com.five5.chatroom.Data.chnnl;
+import com.five5.chatroom.Data.mssg;
 import com.five5.chatroom.Data.user;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +37,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class subscribedChannels extends AppCompatActivity {
 
@@ -54,6 +56,7 @@ public class subscribedChannels extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscribed_channels);
         userEmail=FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        mref=FirebaseDatabase.getInstance().getReference();
 
 
         searchView=(SearchView) findViewById(R.id.search);
@@ -149,6 +152,9 @@ public class subscribedChannels extends AppCompatActivity {
                 String status=ChannelNameStatus.getText().toString();
                 if(status.equals("Name Available!!")){
                     mref.child("Channels").push().setValue(new chnnl(name,"Welcome"));
+                    mref.child("Status").child(name).setValue("");
+                    Date date =new Date();
+                    mref.child("Messages").child(name).child(String.valueOf(date.getTime())).setValue(new mssg("Welcome","0",date.getTime(),FirebaseAuth.getInstance().getCurrentUser().getEmail()));
                     dialog.cancel();}
                 else{
                     txtChannelName.setError("Invalid Channel Name");
