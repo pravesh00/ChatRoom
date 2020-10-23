@@ -101,7 +101,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerMessages"
 
-        android:layout_width="411dp"
+        android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_marginTop="20sp"
         android:layout_marginBottom="30sp"

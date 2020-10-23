@@ -2,6 +2,7 @@ package com.five5.chatroom.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,7 +70,6 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.channelV
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(c, Output_Chatroom.class);
-                i.putExtra("User", FirebaseAuth.getInstance().getCurrentUser().getEmail());
                 i.putExtra("Name",curr.getName());
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 c.startActivity(i);
@@ -78,13 +78,52 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.channelV
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                deleteSubChannel(curr.getName());
 
                     Toast.makeText(c,"Deleted",Toast.LENGTH_SHORT).show();
-                   
+
 
             }
         });
 
+    }
+
+    private void deleteSubChannel(final String name) {
+        Query query= mRef.child("Users").orderByChild("email").equalTo(email);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.e("deletelkeyuser",snapshot.toString());
+                for (DataSnapshot s:snapshot.getChildren()){
+                    user use= s.getValue(user.class);
+                    if(use.getChnls().size()>1)
+                    deleteChannel(s.getKey(),name);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void deleteChannel(final String key, String name) {
+        Query q=mRef.child("Users").child(key).child("chnls").orderByChild("name").equalTo(name);
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot d:snapshot.getChildren()){
+                    mRef.child("Users").child(key).child("chnls").child(d.getKey()).setValue(null);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 

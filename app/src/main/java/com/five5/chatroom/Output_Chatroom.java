@@ -71,7 +71,7 @@ public class Output_Chatroom extends AppCompatActivity {
         arrayMssg.add(new mssg("Loading Messages...","", (long) 0,"Please Wait"));
         final LinearLayoutManager mlay=new LinearLayoutManager(this);
         mssgRecycler.setLayoutManager(mlay);
-        mDatabase =FirebaseDatabase.getInstance();
+        mRef =FirebaseDatabase.getInstance().getReference();
         final String chnl= getIntent().getStringExtra("Name");
         chanl.setText(chnl);
         status=(TextView)findViewById(R.id.txtTypeStatus);
@@ -125,7 +125,7 @@ public class Output_Chatroom extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        mRef= (DatabaseReference) mDatabase.getReference().child("Messages").child(chnl);
+        mRef= mRef.child("Messages").child(chnl);
         mRef.orderByChild("millis").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -133,6 +133,8 @@ public class Output_Chatroom extends AppCompatActivity {
                 for(DataSnapshot snap:snapshot.getChildren()){
                     mssg msg=new mssg(snap.child("text").getValue().toString(),snap.child("time").getValue().toString(),Long.parseLong(snap.child("millis").getValue().toString()),snap.child("sender").getValue().toString());
                     arrayMssg.add(msg);
+                    Log.e("Messages",snap.toString());
+                    adapter.notifyDataSetChanged();
 
                     mlay.smoothScrollToPosition(mssgRecycler,null,adapter.getItemCount()-1);
                 }
@@ -165,7 +167,7 @@ public class Output_Chatroom extends AppCompatActivity {
 
                 if(!mssgBox.getText().toString().isEmpty())
                 {
-                    mRef.child(String.valueOf(date.getTime())).setValue(new mssg(mssgBox.getText().toString(),d,date.getTime(),FirebaseAuth.getInstance().getCurrentUser().getEmail()));
+
                     adapter.notifyDataSetChanged();
 
 
