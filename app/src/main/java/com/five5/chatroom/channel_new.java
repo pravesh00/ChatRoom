@@ -90,8 +90,6 @@ public class channel_new extends Fragment {
                 for(DataSnapshot m: snapshot.getChildren()){
                     channels.clear();
 
-
-                    try{
                         mref.child("Users").child(m.getKey()).child("chnls").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -108,12 +106,11 @@ public class channel_new extends Fragment {
 
                             }
                         });
-                    } catch (Exception e) {
 
-                    }
 
 
                 }
+
             }
 
             @Override

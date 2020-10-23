@@ -5,9 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,8 +39,10 @@ import java.util.HashMap;
 public class emailAuth extends AppCompatActivity {
     TextView txtRegister;
     EditText txtPass,txtEmail;
-    ImageButton btnLogin;
+    Button btnLogin;
     FirebaseAuth mAuth;
+    RelativeLayout relativeLayout;
+    ImageView img;
 
 
     @Override
@@ -43,6 +51,19 @@ public class emailAuth extends AppCompatActivity {
         setContentView(R.layout.activity_email_auth);
         intializeUI();
         mAuth=FirebaseAuth.getInstance();
+        img=(ImageView)findViewById(R.id.logo);
+
+        relativeLayout =(RelativeLayout)findViewById(R.id.relBottom);
+        //relativeLayout.animate().translationY(-500).setDuration(2000);
+
+        WindowManager.LayoutParams lmp =new WindowManager.LayoutParams();
+        Display display =getWindowManager().getDefaultDisplay();
+        //RelativeLayout.LayoutParams layoutParams= new RelativeLayout.LayoutParams(lmp.width,display.getHeight()-1000);
+        //relativeLayout.setLayoutParams(layoutParams);
+        relativeLayout.animate();
+
+
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -142,7 +163,7 @@ public class emailAuth extends AppCompatActivity {
     private void intializeUI() {
         txtEmail =(EditText)findViewById(R.id.txtEmail);
         txtPass=(EditText)findViewById(R.id.txtPass);
-        btnLogin=(ImageButton)findViewById(R.id.btnLogin);
+        btnLogin=(Button)findViewById(R.id.btnLogin);
         txtRegister=(TextView)findViewById(R.id.txtRegister);
     }
 }
