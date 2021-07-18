@@ -1,5 +1,5 @@
 # ChatRoom
-ChatRoom is an android application made in java using android studio. It provides a personal thread where you can chat with people of who have subscribed the channel(message thread)<br/>
+ChatRoom is an android application made in java using android studio. It helps users to make public message threads which can be subscribed by anyone and can be used by anyone, the idea was to create a whatsapp like messenger with open discussion groups.<br/>
 
 ## Libraries
 * Retrofit
