@@ -16,6 +16,8 @@ import java.util.ArrayList;
 public class messageAdapter extends RecyclerView.Adapter<messageAdapter.messageViewHolder> {
     ArrayList<mssg> messages;
     String sId="0";
+    
+    //Constructor for the adapter
 
     public messageAdapter(ArrayList<mssg> messages,String s) {
         this.messages = messages;
@@ -27,10 +29,13 @@ public class messageAdapter extends RecyclerView.Adapter<messageAdapter.messageV
     @Override
     public messageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = null;
+        
+        //Check for which type of layout has to be inflated depending on status of message being received or sent
         if(viewType==1){
-
+           //message received-- left layout
            view=LayoutInflater.from(parent.getContext()).inflate(R.layout.received_message,parent,false);}
         else{
+            //message received-- right layout
             view=LayoutInflater.from(parent.getContext()).inflate(R.layout.send_message,parent,false);
         }
 
@@ -49,7 +54,7 @@ public class messageAdapter extends RecyclerView.Adapter<messageAdapter.messageV
 
     }
 
-
+    //Binding Data
     @Override
     public void onBindViewHolder(@NonNull messageViewHolder holder, int position) {
         mssg curMssg=messages.get(position);
@@ -71,6 +76,8 @@ public class messageAdapter extends RecyclerView.Adapter<messageAdapter.messageV
     public int getItemCount() {
         return messages.size();
     }
+    
+    //Attaching data to UI of viewholder
 
     public class messageViewHolder extends RecyclerView.ViewHolder{
         TextView txtMess,txtTimeStamp,user;
